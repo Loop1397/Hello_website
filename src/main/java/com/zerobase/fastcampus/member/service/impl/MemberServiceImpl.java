@@ -45,7 +45,9 @@ public class MemberServiceImpl implements MemberService {
 		
 		String uuid = UUID.randomUUID().toString();
 		
-		Member member = new Member();
+		
+		/**
+		 * Member member = new Member();
 		member.setUserId(parameter.getUserId());
 		member.setUserName(parameter.getUserName());
 		member.setPhone(parameter.getPhone());
@@ -56,17 +58,33 @@ public class MemberServiceImpl implements MemberService {
 		//그래서 primary key(여기에선 ID)가 같은 경우 save를 못하도록 해야함
 		
 		member.setEmailAuthYn(false);
+		
 		//UUID~ : 랜덤 String 반
 		member.setEmailAuthKey(uuid);
 		memberRepository.save(member);	//현재까지 입력된 데이터 저장
+		 */
+		
+		//Builder어노테이션을 이용해서 상단의 코드를 가독성있게 구현 가능
+		Member member = Member.builder()
+				.userId(parameter.getUserId())
+				.userName(parameter.getUserName())
+				.phone(parameter.getPhone())
+				.password(parameter.getPassword())
+				.regDt(LocalDateTime.now())
+				.emailAuthYn(false)
+				.emailAuthKey(uuid)
+				.build();
+		memberRepository.save(member);
 		
 		String email = parameter.getUserId();
 		String subject = "Zerobase 사이트 가입을 축하드립니다.";
 		String text = "<p>Zerobase 사이트 가입을 축하드립니다.</p><p>아래 링크를 클릭하셔서 가입을 완료하세요.</p>"
-				+ "<div><a href='http://localhost:8080/member/email-auth?id" + uuid + "'>가입 완료</a></div>";
+				+ "<div><a target='_blank' href='http://localhost:8080/member/email_auth?id=" + uuid + "'>가입 완료</a></div>";
 		//? 뒷부분은 '파라미터'라고함
 		//프로토콜://도메인(IP)/주소?쿼리스트림(파라미터)
 		//파라미터 : 클라이언트에서 서버로 전송되는 정보들
+		
+		//이메일 관련된 부분 관리자페이지에서 바꿀 수 있도록 해보자
 		
 		mailComponents.sendMail(email, subject, text);
 		
@@ -76,4 +94,23 @@ public class MemberServiceImpl implements MemberService {
 		return true;
 	}
 
+	@Override
+	public boolean emailAuth(String uuid) {
+		
+		Optional<Member> optionalMember = memberRepository.findByEmailAuthKey(uuid);
+		if(!optionalMember.isPresent()) {
+			return false;
+		}
+		
+		Member member = optionalMember.get();
+		member.setEmailAuthYn(true);
+		member.setEmailAuthDt(LocalDateTime.now());
+		memberRepository.save(member);
+		
+		
+		return true;
+	}
+
+	
+	
 }

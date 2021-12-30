@@ -56,23 +56,26 @@ public class MemberController {
 
 		//Model : 클라이언트에 데이터를 내리기 위한 인터페이스
 		//결과(result)값에 따라 thymeleaf문법을 이용해 페이지에 출력되는 내용 변경
-		if(result) {
-			model.addAttribute("result", "회원가입에 성공했습니다");
-		} else {
-			model.addAttribute("result", "회원가입에 실패했습니다");
-		}
-//		model.addAttribute("result", result);
+//		if(result) {
+//			model.addAttribute("result", "회원가입에 성공했습니다");
+//		} else {
+//			model.addAttribute("result", "회원가입에 실패했습니다");
+//		}
+		model.addAttribute("result", result);
 		
 		return "member/register_complete";
 	}
 	
-	@GetMapping("/member/email-auth")
-	public String emailAuth(HttpServletRequest request) {
+	@GetMapping("/member/email_auth")
+	public String emailAuth(Model model, HttpServletRequest request) {
 		
 		//파라미터(클라이언트에서 서버로 전송되는 정보들) 받기
-		String id = request.getParameter("id");
+		//본 코드에선 주소의 email_auth뒤에 ?id=~~라 쳤을 때 ~~부분을 String uuid에 저장함
+		String uuid = request.getParameter("id");
+		System.out.println(uuid);
 		
-		System.out.println(id);
+		boolean result = memberService.emailAuth(uuid);
+		model.addAttribute("result", result);
 		
 		return "member/email_auth";
 		
