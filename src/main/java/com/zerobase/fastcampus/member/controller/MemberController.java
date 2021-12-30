@@ -1,13 +1,13 @@
 package com.zerobase.fastcampus.member.controller;
 
-import java.time.LocalDateTime;
+//import java.time.LocalDateTime;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.zerobase.fastcampus.member.entity.Member;
+//import com.zerobase.fastcampus.member.entity.Member;
 import com.zerobase.fastcampus.member.model.MemberInput;
-import com.zerobase.fastcampus.member.repository.MemberRepository;
+//import com.zerobase.fastcampus.member.repository.MemberRepository;
 import com.zerobase.fastcampus.member.service.MemberService;
 
 import lombok.RequiredArgsConstructor;
@@ -16,6 +16,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+
+/**
+ * 멤버 관련 컨트롤러
+ * @author nochan-u
+ *
+ */
+
 
 @RequiredArgsConstructor	//생성자를 자동으로 만들어주는 어노테이션
 @Controller
@@ -48,8 +55,27 @@ public class MemberController {
 		boolean result = memberService.register(parameter);
 
 		//Model : 클라이언트에 데이터를 내리기 위한 인터페이스
-		model.addAttribute("result", result);
+		//결과(result)값에 따라 thymeleaf문법을 이용해 페이지에 출력되는 내용 변경
+		if(result) {
+			model.addAttribute("result", "회원가입에 성공했습니다");
+		} else {
+			model.addAttribute("result", "회원가입에 실패했습니다");
+		}
+//		model.addAttribute("result", result);
 		
 		return "member/register_complete";
 	}
+	
+	@GetMapping("/member/email-auth")
+	public String emailAuth(HttpServletRequest request) {
+		
+		//파라미터(클라이언트에서 서버로 전송되는 정보들) 받기
+		String id = request.getParameter("id");
+		
+		System.out.println(id);
+		
+		return "member/email_auth";
+		
+	}
+	
 }

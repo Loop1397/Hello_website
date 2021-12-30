@@ -9,6 +9,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 //import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.zerobase.fastcampus.components.MailComponents;
+
+import lombok.RequiredArgsConstructor;
 //import org.springframework.web.bind.annotation.RestController;
 
 
@@ -21,11 +25,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 //annotation : 어떠한 딱지..?
 //Controller : 주소를 매핑하면 특정한 클래스.
 @Controller
+@RequiredArgsConstructor
 public class MainController {
 
+	private final MailComponents mailComponents;
+	
 	//매핑
 	@RequestMapping("/")	//기본 주소(localhost:8080/)에 매핑했음.
 	public String index() {
+		
+		String email = "loop1397@naver.com";
+		String subject = "안녕하세요. 제로베이스 입니다.";
+		String text = "<p>안녕하세요.</p><p>반갑습니다.</p>";
+		
+		mailComponents.sendMail(email, subject, text);
 		
 		//templates의 index.html 출력 
 		return "index";
