@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * 멤버 관련 컨트롤러
@@ -31,6 +32,13 @@ public class MemberController {
 	//생성자 객체를 통해서 데이터를 주입 및 처리 
 	private final MemberService memberService;
 
+	
+	//로그인 페이지
+	@RequestMapping("/member/login")
+	public String login() {
+		
+		return "member/login";
+	}
 	
 	//페이지 로딩 시
 	//@RequestMapping(value = "/member/register", method = RequestMethod.GET)	
@@ -79,6 +87,12 @@ public class MemberController {
 		
 		return "member/email_auth";
 		
+	}
+	
+	@GetMapping("/member/info")
+	public String memberInfo() {
+		
+		return "member/info";
 	}
 	
 }

@@ -1,8 +1,10 @@
 package com.zerobase.fastcampus.member.service;
 
+import org.springframework.security.core.userdetails.UserDetailsService;
+
 import com.zerobase.fastcampus.member.model.MemberInput;
 
-public interface MemberService {
+public interface MemberService extends UserDetailsService {
 	
 	boolean register(MemberInput parameter);
 	

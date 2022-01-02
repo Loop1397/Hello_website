@@ -1,13 +1,21 @@
 package com.zerobase.fastcampus.member.service.impl;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.security.core.*;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import com.zerobase.fastcampus.components.MailComponents;
 import com.zerobase.fastcampus.member.entity.Member;
+import com.zerobase.fastcampus.member.exception.MemberNotEmailAuthException;
 import com.zerobase.fastcampus.member.model.MemberInput;
 import com.zerobase.fastcampus.member.repository.MemberRepository;
 import com.zerobase.fastcampus.member.service.MemberService;
@@ -43,6 +51,9 @@ public class MemberServiceImpl implements MemberService {
 			return false;
 		}
 		
+		//패스워드 암호화해서 저장(BCrypt)
+		String encPassword = BCrypt.hashpw(parameter.getPassword(), BCrypt.gensalt());
+		
 		String uuid = UUID.randomUUID().toString();
 		
 		
@@ -69,7 +80,7 @@ public class MemberServiceImpl implements MemberService {
 				.userId(parameter.getUserId())
 				.userName(parameter.getUserName())
 				.phone(parameter.getPhone())
-				.password(parameter.getPassword())
+				.password(encPassword)
 				.regDt(LocalDateTime.now())
 				.emailAuthYn(false)
 				.emailAuthKey(uuid)
@@ -109,6 +120,27 @@ public class MemberServiceImpl implements MemberService {
 		
 		
 		return true;
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		
+		Optional<Member> optionalMember = memberRepository.findById(username);
+		if(!optionalMember.isPresent()) {
+			throw new UsernameNotFoundException("회원 정보가 존재하지 않습니다.");
+		}
+		
+		Member member = optionalMember.get();
+		//멤버가 이메일 인증을 하지 않았을 시 에러 던지기
+		if(!member.isEmailAuthYn()) {
+			throw new MemberNotEmailAuthException("이메일을 활성화 한 이후에 로그인해주세요.");
+		}
+		
+		ArrayList<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+		grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+		
+		return new User(member.getUserId(), member.getPassword(), grantedAuthorities);
+		
 	}
 
 	

@@ -1,4 +1,4 @@
-package com.zerobase.fastcampus;
+package com.zerobase.fastcampus.main.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
