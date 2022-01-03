@@ -1,4 +1,4 @@
-package com.zerobase.fastcampus.member.model;
+package com.zerobase.fastlms.member.model;
 
 //lombok : getter, setter를 자동으로 만들어주는 라이브러리
 import lombok.Data;

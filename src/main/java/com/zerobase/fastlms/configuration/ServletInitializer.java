@@ -1,9 +1,9 @@
-package com.zerobase.fastcampus.configuration;
+package com.zerobase.fastlms.configuration;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
-import com.zerobase.fastcampus.HelloWebsiteApplication;
+import com.zerobase.fastlms.HelloWebsiteApplication;
 
 public class ServletInitializer extends SpringBootServletInitializer {
 

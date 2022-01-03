@@ -1,4 +1,4 @@
-package com.zerobase.fastcampus.member.entity;
+package com.zerobase.fastlms.member.entity;
 
 import java.time.LocalDateTime;
 
@@ -41,6 +41,11 @@ public class Member {
 	private String emailAuthKey;
 	//이메일 인증 한 일자 저장
 	private LocalDateTime emailAuthDt;
+	
+	//패스워드 초기화 시 사용할 키
+	private String resetPasswordKey;
+	//패스워드 초기화 가능 시간 저장 용 변수
+	private LocalDateTime resetPasswordLimitDt;
 	
 	
 }

@@ -1,4 +1,4 @@
-package com.zerobase.fastcampus.configuration;
+package com.zerobase.fastlms.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,7 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import com.zerobase.fastcampus.member.service.MemberService;
+import com.zerobase.fastlms.member.service.MemberService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -45,7 +45,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 				.antMatchers(
 						"/",
 						"/member/register",
-						"/member/email_auth"
+						"/member/email_auth",
+						"/member/find/password",
+						"/member/reset/password"
 				)
 				.permitAll();
 		

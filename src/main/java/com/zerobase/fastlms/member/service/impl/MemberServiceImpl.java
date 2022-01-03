@@ -1,4 +1,4 @@
-package com.zerobase.fastcampus.member.service.impl;
+package com.zerobase.fastlms.member.service.impl;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -13,12 +13,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
-import com.zerobase.fastcampus.components.MailComponents;
-import com.zerobase.fastcampus.member.entity.Member;
-import com.zerobase.fastcampus.member.exception.MemberNotEmailAuthException;
-import com.zerobase.fastcampus.member.model.MemberInput;
-import com.zerobase.fastcampus.member.repository.MemberRepository;
-import com.zerobase.fastcampus.member.service.MemberService;
+import com.zerobase.fastlms.components.MailComponents;
+import com.zerobase.fastlms.member.entity.Member;
+import com.zerobase.fastlms.member.exception.MemberNotEmailAuthException;
+import com.zerobase.fastlms.member.model.MemberInput;
+import com.zerobase.fastlms.member.model.ResetPasswordInput;
+import com.zerobase.fastlms.member.repository.MemberRepository;
+import com.zerobase.fastlms.member.service.MemberService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -123,6 +124,33 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
+	public boolean sendResetPassword(ResetPasswordInput parameter) {
+		
+		Optional<Member> optionalMember = memberRepository.findByUserIdAndUserName(parameter.getUserId(), parameter.getUserName());
+		if(!optionalMember.isPresent()) {
+			throw new UsernameNotFoundException("회원 정보가 존재하지 않습니다.");
+		}
+		
+		Member member = optionalMember.get();
+		
+		String uuid = UUID.randomUUID().toString();
+		
+		member.setResetPasswordKey(uuid);
+		//하루 뒤 까지 유효
+		member.setResetPasswordLimitDt(LocalDateTime.now().plusDays(1));
+		memberRepository.save(member);
+		
+		String email = parameter.getUserId();
+		String subject = "[Zerobase] 비밀번호 초기화 메일 입니다.";
+		String text = "<p>Zerobase 비밀벙호 초기화 메일 입니다.</p>"
+				+ "<p>아래 링크를 클릭하셔서 비밀번호를 초기화 해주세요.</p>"
+				+ "<div><a target='_blank' href='http://localhost:8080/member/reset/password?id=" + uuid + "'>비밀번호 초기화 링크</a></div>";
+		mailComponents.sendMail(email, subject, text);
+		
+		return true;
+	}
+	
+	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		
 		Optional<Member> optionalMember = memberRepository.findById(username);
@@ -142,6 +170,65 @@ public class MemberServiceImpl implements MemberService {
 		return new User(member.getUserId(), member.getPassword(), grantedAuthorities);
 		
 	}
+
+	//입력받은 password로 패스워드 초기화
+	@Override
+	public boolean resetPassword(String uuid, String password) {
+		
+		Optional<Member> optionalMember = memberRepository.findByResetPasswordKey(uuid);
+		if(!optionalMember.isPresent()) {
+			throw new UsernameNotFoundException("회원 정보가 존재하지 않습니다.");
+		}
+		
+		Member member = optionalMember.get();
+		
+		//초기화 날짜가 유효한지 체크
+		if(member.getResetPasswordLimitDt() == null) {
+			throw new RuntimeException("유효한 날짜가 아닙니다.");
+		}
+		
+		//초기화 날짜가 지나지 않았는지 체크
+		if(member.getResetPasswordLimitDt().isBefore(LocalDateTime.now())) {
+			throw new RuntimeException("유효한 날짜가 아닙니다.");
+		}
+		
+		
+		//바뀐 비밀번호 암호화해서 저장 후 비밀번호 초기화에 사용 된 임시 값 모두 삭제
+		String encPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+		member.setPassword(encPassword);
+		member.setResetPasswordKey("");
+		member.setResetPasswordLimitDt(null);
+		memberRepository.save(member);
+		
+		
+		return true;
+	}
+
+	//입력받은 uuid값이 유효한지 확인
+	@Override
+	public boolean checkResetPassword(String uuid) {
+		Optional<Member> optionalMember = memberRepository.findByResetPasswordKey(uuid);
+		if(!optionalMember.isPresent()) {
+			return false;
+		}
+		
+		Member member = optionalMember.get();
+		
+		//초기화 날짜가 유효한지 체크
+		if(member.getResetPasswordLimitDt() == null) {
+			throw new RuntimeException("유효한 날짜가 아닙니다.");
+		}
+		
+		//초기화 날짜가 지나지 않았는지 체크
+		if(member.getResetPasswordLimitDt().isBefore(LocalDateTime.now())) {
+			throw new RuntimeException("유효한 날짜가 아닙니다.");
+		}
+		
+		
+		return true;
+	}
+
+	
 
 	
 	

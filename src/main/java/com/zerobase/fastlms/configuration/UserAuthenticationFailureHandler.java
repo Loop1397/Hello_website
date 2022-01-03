@@ -1,4 +1,4 @@
-package com.zerobase.fastcampus.configuration;
+package com.zerobase.fastlms.configuration;
 
 import java.io.IOException;
 

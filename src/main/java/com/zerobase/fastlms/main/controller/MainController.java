@@ -1,4 +1,4 @@
-package com.zerobase.fastcampus.main.controller;
+package com.zerobase.fastlms.main.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Controller;
 //import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.zerobase.fastcampus.components.MailComponents;
+import com.zerobase.fastlms.components.MailComponents;
 
 import lombok.RequiredArgsConstructor;
 //import org.springframework.web.bind.annotation.RestController;

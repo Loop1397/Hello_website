@@ -1,4 +1,4 @@
-package com.zerobase.fastcampus.components;
+package com.zerobase.fastlms.components;
 
 /**
  * 메일을 보내기 위한 메소드가 들은 클래스
