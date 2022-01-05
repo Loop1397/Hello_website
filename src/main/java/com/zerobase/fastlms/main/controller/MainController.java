@@ -7,10 +7,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 //import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.zerobase.fastlms.components.MailComponents;
+import com.zerobase.fastlms.member.model.MemberInput;
 
 import lombok.RequiredArgsConstructor;
 //import org.springframework.web.bind.annotation.RestController;
@@ -55,28 +59,24 @@ public class MainController {
 	// response: 서버에서 웹으로 보내기 위해 사용되는 객체
 	// 두가지 객체에 대한 인터페이스가 아래(hello)에 들어가있음
 	
-	@RequestMapping("/hello")	//localhost:8080/hello에 매핑했음.
-	public void hello(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	//회원가입 이메일 제목, 내용 바꾸기
+	@GetMapping("/email/setting")
+	public String emailSetting() {
+		return "/email_setting";
+	}
+	
+	@PostMapping("/email/setting")
+	public String emailSettingSubmit(HttpServletRequest request, MemberInput memberInput) {
 		
-		response.setContentType("text/html;charset=UTF-8"); //객체의 charset선
+		memberInput.setEmailSubject(request.getParameter("emailSubject"));
+		memberInput.setEmailText(request.getParameter("emailText"));
 		
-		PrintWriter printWriter = response.getWriter();
-		
-		String msg = "<html>" + 
-				"<head>" +
-				"<meta charset = \"UTF-8\">" +
-				"</head>" +
-				"<body>" +
-				"<p>hello</p> <p>fastcampus website!</p>" +
-				"<p>안녕하세요!</p>" +
-				"</body>" + 
-				"</html>";
-		
-		printWriter.write(msg);
-		printWriter.close();
-		
-		//RestController를 쓰면 문자열을 return해도 괜찮지만, Controller를 쓰면 문자열 return이 불가능(오류).
-		//return msg;
+		System.out.println(request.getParameter("emailSubject"));
+		System.out.println(request.getParameter("emailText"));	
+		System.out.println(memberInput.getEmailSubject());
+		System.out.println(memberInput.getEmailText());			
+				
+		return "email_setting_complete";
 	}
 	
 	

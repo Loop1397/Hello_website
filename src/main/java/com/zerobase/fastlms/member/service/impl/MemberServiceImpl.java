@@ -28,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class MemberServiceImpl implements MemberService {
 
+	
 	private final MemberRepository memberRepository;
 	private final MailComponents mailComponents;
 	
@@ -76,6 +77,8 @@ public class MemberServiceImpl implements MemberService {
 		memberRepository.save(member);	//현재까지 입력된 데이터 저장
 		 */
 		
+		
+		
 		//Builder어노테이션을 이용해서 상단의 코드를 가독성있게 구현 가능
 		Member member = Member.builder()
 				.userId(parameter.getUserId())
@@ -88,9 +91,11 @@ public class MemberServiceImpl implements MemberService {
 				.build();
 		memberRepository.save(member);
 		
+		
+		
 		String email = parameter.getUserId();
-		String subject = "Zerobase 사이트 가입을 축하드립니다.";
-		String text = "<p>Zerobase 사이트 가입을 축하드립니다.</p><p>아래 링크를 클릭하셔서 가입을 완료하세요.</p>"
+		String subject = parameter.getEmailSubject();
+		String text = "<p>" + parameter.getEmailText() + "</p>"
 				+ "<div><a target='_blank' href='http://localhost:8080/member/email_auth?id=" + uuid + "'>가입 완료</a></div>";
 		//? 뒷부분은 '파라미터'라고함
 		//프로토콜://도메인(IP)/주소?쿼리스트림(파라미터)

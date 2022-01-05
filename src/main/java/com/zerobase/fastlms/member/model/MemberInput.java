@@ -4,7 +4,7 @@ package com.zerobase.fastlms.member.model;
 import lombok.Data;
 import lombok.ToString;
 
-//정보를 받기 위한 모뎀
+//@Data : 정보를 받기 위한 lombok의 어노테이션
 @ToString
 @Data
 public class MemberInput {
@@ -13,6 +13,11 @@ public class MemberInput {
 	private String userName;
 	private String password;
 	private String phone;
+	
+	//회원가입 이메일 제목/내용
+	//환수에게 물어보자..
+	private String emailSubject = "Zerobase 사이트 가입을 축하드립니다.";
+	private String emailText = "Zerobase 사이트 가입을 축하드립니다.</p><p>아래 링크를 클릭하셔서 가입을 완료하세요.";
 	
 //	public String getUserId() {
 //		return userId;

@@ -39,5 +39,6 @@ public interface MemberService extends UserDetailsService {
 	 */
 	boolean checkResetPassword(String uuid);
 
+
 	
 }

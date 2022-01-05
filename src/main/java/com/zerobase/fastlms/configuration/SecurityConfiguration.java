@@ -44,10 +44,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 		http.authorizeRequests()
 				.antMatchers(
 						"/",
+						"/hello",
 						"/member/register",
 						"/member/email_auth",
 						"/member/find/password",
-						"/member/reset/password"
+						"/member/reset/password",
+						"/email/setting"
 				)
 				.permitAll();
 		

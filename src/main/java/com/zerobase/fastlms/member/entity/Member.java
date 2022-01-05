@@ -46,6 +46,6 @@ public class Member {
 	private String resetPasswordKey;
 	//패스워드 초기화 가능 시간 저장 용 변수
 	private LocalDateTime resetPasswordLimitDt;
-	
+
 	
 }

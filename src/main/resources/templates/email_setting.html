@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>이메일 양식 설정</title>
+</head>
+<body>
+
+	<h1>이메일 양식 설정</h1>
+	<div th:fragment="fragment-body-menu"></div>
+	
+	<form method="post">
+	
+		<div>
+			<input type="text" name="emailSubject" placeholder="이메일 제목 입력">
+		</div>
+		<div>
+			<textarea name="emailText" placeholder="이메일 내용 입력" width="400px" height="350px"></textarea>
+		</div>
+		<div>
+			<button type="submit">이메일 양식 재설정</button>
+		</div>
+	
+	
+	</form>
+
+
+</body>
+</html>
