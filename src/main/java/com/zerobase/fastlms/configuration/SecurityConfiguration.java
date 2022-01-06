@@ -39,8 +39,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 		
 		//http페이지의 권환을 설정할 수 있음
 		
-		//"/"(루트), "/**"(루트 외의 모든 페이지)
-		//permitAll() : 로그인 없이 접근할 수 있도록 설정함
+		/**
+		 * "/"(루트), "/**"(루트 외의 모든 페이지)
+		 * antMatchers("주소") : 설정을 적용할 페이지 지정
+		 * permitAll() : 해당 페이지에는 권한 없이 접근할 수 있도록 설정함
+		 * hasAuthority("권한 명") : 해당 권한 명을 가진 계정만 접근할 수 있도록 설정함
+		 */
+		
+		
 		http.authorizeRequests()
 				.antMatchers(
 						"/",
@@ -52,6 +58,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 						"/email/setting"
 				)
 				.permitAll();
+		
+		//admin이하의 모든 페이지는 ROLE_ADMIN이 설정되어있어야지만 접근할 수 있음.(adminYn = true)
+		http.authorizeRequests()
+				.antMatchers("/admin/**")
+				.hasAuthority("ROLE_ADMIN");
+		
+		//권환이 없는 상태에서 특정 페이지에 접근했을 때 /error/denied로 자동 이동
+		http.exceptionHandling()
+				.accessDeniedPage("/error/denied");
 		
 		//로그인 관련
 		//failureHandler() : 로그인에 실패했을 때 처리하는 함수

@@ -47,5 +47,7 @@ public class Member {
 	//패스워드 초기화 가능 시간 저장 용 변수
 	private LocalDateTime resetPasswordLimitDt;
 
-	
+	//관리자 여부 지정 or 회원에 따른 역할 지정
+	//준회원, 정회원, 특별회원, 관리자 등등. (ROLE_SEMI_USER, ROLE_USER, ROLE_SPECIAL_USER, ROLE_ADMIN...)
+	private boolean adminYn;
 }

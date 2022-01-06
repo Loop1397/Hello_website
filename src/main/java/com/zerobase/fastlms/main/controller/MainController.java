@@ -37,15 +37,17 @@ public class MainController {
 	//매핑
 	@RequestMapping("/")	//기본 주소(localhost:8080/)에 매핑했음.
 	public String index() {
-		
-//		String email = "loop1397@naver.com";
-//		String subject = "안녕하세요. 제로베이스 입니다.";
-//		String text = "<p>안녕하세요.</p><p>반갑습니다.</p>";
-//		
-//		mailComponents.sendMail(email, subject, text);
+
 		
 		//templates의 index.html 출력 
 		return "index";
+	}
+	
+	//권한 관련 에러페이지
+	@RequestMapping("/error/denied")
+	public String errorDenied() {
+		
+		return "error/denied";
 	}
 	
 	// 스프링 -> MVC (View -> 템플릿엔진 화면에 내용을 출력(html))
@@ -70,11 +72,6 @@ public class MainController {
 		
 		memberInput.setEmailSubject(request.getParameter("emailSubject"));
 		memberInput.setEmailText(request.getParameter("emailText"));
-		
-		System.out.println(request.getParameter("emailSubject"));
-		System.out.println(request.getParameter("emailText"));	
-		System.out.println(memberInput.getEmailSubject());
-		System.out.println(memberInput.getEmailText());			
 				
 		return "email_setting_complete";
 	}

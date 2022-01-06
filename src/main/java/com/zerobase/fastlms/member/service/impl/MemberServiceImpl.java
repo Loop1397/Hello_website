@@ -2,6 +2,7 @@ package com.zerobase.fastlms.member.service.impl;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -12,7 +13,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
+import com.zerobase.fastlms.admin.dto.MemberDto;
+import com.zerobase.fastlms.admin.mapper.MemberMapper;
+import com.zerobase.fastlms.admin.model.MemberParam;
 import com.zerobase.fastlms.components.MailComponents;
 import com.zerobase.fastlms.member.entity.Member;
 import com.zerobase.fastlms.member.exception.MemberNotEmailAuthException;
@@ -27,15 +32,16 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Service
 public class MemberServiceImpl implements MemberService {
-
+ 
 	
 	private final MemberRepository memberRepository;
 	private final MailComponents mailComponents;
 	
+	private final MemberMapper memberMapper;
+	
 	/**
 	 * 회원 가입
 	 */
-	
 	@Override
 	public boolean register(MemberInput parameter) {
 		// TODO Auto-generated method stub
@@ -114,12 +120,19 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public boolean emailAuth(String uuid) {
 		
+		//해당 EmailAuthKey가 존재하는지 확인, 없으면 활성화 실패 메세지 
 		Optional<Member> optionalMember = memberRepository.findByEmailAuthKey(uuid);
 		if(!optionalMember.isPresent()) {
 			return false;
 		}
 		
 		Member member = optionalMember.get();
+		
+		//해당 계정이 이미 활성화 되어있는지 확인. 없으면 활성화 실패 메세지 
+		if(member.isEmailAuthYn()) {
+			return false;
+		}
+		
 		member.setEmailAuthYn(true);
 		member.setEmailAuthDt(LocalDateTime.now());
 		memberRepository.save(member);
@@ -171,6 +184,9 @@ public class MemberServiceImpl implements MemberService {
 		
 		ArrayList<GrantedAuthority> grantedAuthorities = new ArrayList<>();
 		grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+		
+		if(member.isAdminYn()) {
+			grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));		}
 		
 		return new User(member.getUserId(), member.getPassword(), grantedAuthorities);
 		
@@ -231,6 +247,24 @@ public class MemberServiceImpl implements MemberService {
 		
 		
 		return true;
+	}
+
+	//멤버 정보 리턴
+	@Override
+	public List<MemberDto> list(MemberParam parameter) {
+		
+		long totalCount = memberMapper.selectListCount(parameter);
+		List<MemberDto> list = memberMapper.selectList(parameter);
+		
+		if(CollectionUtils.isEmpty(list)) {
+			for(MemberDto x : list) {
+				x.setTotalCount(totalCount);
+			}
+		}
+		
+		return list; 
+		
+		//return memberRepository.findAll();
 	}
 
 	
