@@ -52,8 +52,9 @@ public class PageUtil {
         -> 종료페이지번호 구해야함.
     */
 
-    public PageUtil(long totalCount, long pageIndex, String queryString) {
+    public PageUtil(long totalCount, long pageSize, long pageIndex, String queryString) {
         this.totalCount = totalCount;
+        this.pageSize = pageSize;
         this.pageIndex = pageIndex;
         this.queryString = queryString;
     }

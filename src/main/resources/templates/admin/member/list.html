@@ -13,9 +13,27 @@
 			border: solid 1px #000;
 		}
 		.search-form {
+			position: relative;
 			padding: 5px 0 10px 0;
 			text-align: right;
 		}
+		.total-count {
+			position: absolute;
+			left: 0; top: 0;
+			height: 20px;
+			float: left;
+		}
+		.pager {
+			margin-top : 10px;
+			text-align: center;
+		}
+		
+		.pager a.on {
+			font-weight: bold;
+			color: red;
+		}
+		
+		
 	</style>
 </head>
 <body>
@@ -43,6 +61,8 @@
 		<div th:text="${param.searchValue}"></div>
 		
 		<div class="search-form">
+			<p class="total-count">전체 <span th:text="${totalCount}"></span>개</p>
+			
 			<form method="get">
 				<select name="searchType">
 					<option value="all">전체</option>
@@ -83,7 +103,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<<!-- tr>
+				<!-- <tr>
 					<td>1</td>
 					<td>loop1397@naver.com</td>
 					<td>김홍</td>
@@ -93,8 +113,15 @@
 					<td>Y</td>
 				</tr> -->
 				<tr th:each="x : ${list}">
-					<td>1</td>
-					<td th:text="${x.userId}"></td>
+					<td th:text="${x.seq}"></td>
+					<td>
+					<!-- 
+						<a th:text="${x.userId}" 
+						   th:href="${'detail?userId=' + x.userId}">
+							satcop@naver.com</a> -->
+					
+					</td>
+					
 					<td th:text="${x.userName}"></td>
 					<td th:text="${x.phone}"></td>
 					<td>

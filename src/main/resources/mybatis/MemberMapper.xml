@@ -69,7 +69,13 @@
 	</if>
 
 
-	limit 0, 10
+	limit #{pageStart}, #{pageEnd}
   </select>
+  <!-- 
+  pageIndex: 1 -> limit 0, 10
+  pageIndex: 2 -> limit 10, 10
+  pageIndex: 3 -> limit 20, 10
+  pageIndex: 4 -> limit 30, 10
+   -->
   
 </mapper>

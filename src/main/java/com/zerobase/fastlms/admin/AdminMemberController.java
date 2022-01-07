@@ -28,27 +28,41 @@ public class AdminMemberController {
 	@GetMapping("/admin/member/list")
 	public String list(Model model, MemberParam parameter) {
 		
+		parameter.init();
+		
 		List<MemberDto> members = memberService.list(parameter);
 		
 		model.addAttribute("list", members);
 		
-		long totalCount = 30;
+		long totalCount = 0;
 		
 		//member가 0명 이상일 때 멤버의 수(members.size())를 값으로 넣음
-		if(members != null) {
+		if(members != null && members.size() > 0) {
 			totalCount = members.get(0).getTotalCount();
 		}
-		String queryString = "";
+		String queryString = parameter.getQueryString();
 		
-		System.out.println("메로로옴레옹" + members.get(0).getTotalCount());
 		
-		PageUtil pageUtil = new PageUtil(totalCount, parameter.getPageIndex(), queryString);
+		PageUtil pageUtil = new PageUtil(totalCount, parameter.getPageSize(), parameter.getPageIndex(), queryString);
+		
+		model.addAttribute("list", members);
+		model.addAttribute("totalCount", totalCount);
 		model.addAttribute("pager", pageUtil.pager());
 		
 		
 		return "admin/member/list";
 	}
 	
+	@GetMapping("/admin/member/detail")
+	public String detail(Model model, MemberParam parameter) {
+		
+		parameter.init();
+		
+		MemberDto member = memberService.detail(parameter.getUserId());
+		model.addAttribute("member", member);
+		
+		return "admin/member/detail";
+	}
 	
 	
 }
