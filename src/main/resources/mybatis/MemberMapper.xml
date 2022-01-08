@@ -4,9 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zerobase.fastlms.admin.mapper.MemberMapper">
 
-	<select id="selectListCount" 
-  		parameterType="com.zerobase.fastlms.admin.model.MemberParam"
-  		resultType="long">
+	<select id="selectListCount" resultType="long">
   		
   	select count(*) 
 	from member

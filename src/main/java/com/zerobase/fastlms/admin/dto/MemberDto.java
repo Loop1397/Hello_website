@@ -4,10 +4,14 @@ import java.time.LocalDateTime;
 
 import com.zerobase.fastlms.member.entity.Member;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 //Member 엔티티클래스와는 다르게 데이터를 가공하여 가져옴
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @Data
 public class MemberDto {
@@ -26,7 +30,7 @@ public class MemberDto {
 	LocalDateTime resetPasswordLimitDt;
 	
 	boolean adminYn;
-	
+	String userStatus;
 	
 	//추가 컬럼
 	long totalCount;
@@ -39,13 +43,15 @@ public class MemberDto {
 				.userId(member.getUserId())
 				.userName(member.getUserName())
 				.phone(member.getPhone())
+//				.password(member.getPassword())
 				.regDt(member.getRegDt())
 				.emailAuthYn(member.isEmailAuthYn())
 				.emailAuthDt(member.getEmailAuthDt())
 				.emailAuthKey(member.getEmailAuthKey())
-//				.resetPasswordKey(member.getResetPasswordKey())
-//				.resetPasswordLimitDt(member.getResetPasswordLimitDt())
-//				.adminYn(member.isAdminYn())
+				.resetPasswordKey(member.getResetPasswordKey())
+				.resetPasswordLimitDt(member.getResetPasswordLimitDt())
+				.userStatus(member.getUserStatus())
+				.adminYn(member.isAdminYn())
 				.build();
 		
 		

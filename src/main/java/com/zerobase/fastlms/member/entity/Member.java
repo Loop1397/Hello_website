@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data
 @Entity
-public class Member {
+public class Member implements MemberCode{
 	//Attribute key
 	@Id
 	private String userId;
@@ -50,4 +50,7 @@ public class Member {
 	//관리자 여부 지정 or 회원에 따른 역할 지정
 	//준회원, 정회원, 특별회원, 관리자 등등. (ROLE_SEMI_USER, ROLE_USER, ROLE_SPECIAL_USER, ROLE_ADMIN...)
 	private boolean adminYn;
+	
+	//현재 유저 상태 저장(사용중, 정지중 등등)
+	private String userStatus;
 }

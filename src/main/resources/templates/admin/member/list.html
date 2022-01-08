@@ -57,9 +57,6 @@
 	
 	<div class="list">
 		
-		<div th:text="${param.searchType}"></div>
-		<div th:text="${param.searchValue}"></div>
-		
 		<div class="search-form">
 			<p class="total-count">전체 <span th:text="${totalCount}"></span>개</p>
 			
@@ -103,36 +100,26 @@
 				</tr>
 			</thead>
 			<tbody>
-				<!-- <tr>
-					<td>1</td>
-					<td>loop1397@naver.com</td>
-					<td>김홍</td>
-					<td>010-1234-5678</td>
-					<td>Y</td>
-					<td>2022.01.06</td>
-					<td>Y</td>
-				</tr> -->
 				<tr th:each="x : ${list}">
 					<td th:text="${x.seq}"></td>
 					<td>
-					<!-- 
 						<a th:text="${x.userId}" 
 						   th:href="${'detail?userId=' + x.userId}">
-							satcop@naver.com</a> -->
+							loop1397@naver.com</a>
 					
 					</td>
 					
-					<td th:text="${x.userName}"></td>
-					<td th:text="${x.phone}"></td>
+					<td th:text="${x.userName}">김풍</td>
+					<td th:text="${x.phone}">010-1111-2222</td>
 					<td>
-						<p th:if="${x.emailAuthYn eq true}">Y</p>
+						<p th:if="${x.emailAuthYn}">Y</p>
 						<p th:if="${x.emailAuthYn eq false}">N</p>
 					</td>
 					<td>
 					 	<p th:text="${x.regDt}"></p>
 					</td>
 					<td>
-						<p th:if="${x.adminYn eq true}">Y</p>
+						<p th:if="${x.adminYn}">Y</p>
 						<p th:if="${x.adminYn eq false}">N</p>
 					</td>
 				</tr>

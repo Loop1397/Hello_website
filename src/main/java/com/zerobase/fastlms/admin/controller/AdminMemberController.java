@@ -1,13 +1,15 @@
-package com.zerobase.fastlms.admin;
+package com.zerobase.fastlms.admin.controller;
 
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import com.zerobase.fastlms.admin.dto.MemberDto;
 import com.zerobase.fastlms.admin.model.MemberParam;
+import com.zerobase.fastlms.admin.model.MemberInput;
 import com.zerobase.fastlms.member.entity.Member;
 import com.zerobase.fastlms.member.service.MemberService;
 import com.zerobase.fastlms.util.PageUtil;
@@ -32,8 +34,6 @@ public class AdminMemberController {
 		
 		List<MemberDto> members = memberService.list(parameter);
 		
-		model.addAttribute("list", members);
-		
 		long totalCount = 0;
 		
 		//member가 0명 이상일 때 멤버의 수(members.size())를 값으로 넣음
@@ -41,8 +41,6 @@ public class AdminMemberController {
 			totalCount = members.get(0).getTotalCount();
 		}
 		String queryString = parameter.getQueryString();
-		
-		
 		PageUtil pageUtil = new PageUtil(totalCount, parameter.getPageSize(), parameter.getPageIndex(), queryString);
 		
 		model.addAttribute("list", members);
@@ -64,5 +62,22 @@ public class AdminMemberController {
 		return "admin/member/detail";
 	}
 	
+	@PostMapping("/admin/member/status")
+	public String status(Model model, MemberInput parameter) {
+		
+		boolean result = memberService.updateStatus(parameter.getUserId(), parameter.getUserStatus());
+		
+		//redirect: - 직접 주소를 이동시키는 방법
+		return "redirect:/admin/member/detail?userId=" + parameter.getUserId();
+	}
+	
+	@PostMapping("/admin/member/password")
+	public String password(Model model, MemberInput parameter) {
+		
+		boolean result = memberService.updatePassword(parameter.getUserId(), parameter.getPassword());
+		
+		//redirect: - 직접 주소를 이동시키는 방법
+		return "redirect:/admin/member/detail?userId=" + parameter.getUserId();
+	}
 	
 }
