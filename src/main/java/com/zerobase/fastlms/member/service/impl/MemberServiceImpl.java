@@ -323,7 +323,7 @@ public class MemberServiceImpl implements MemberService {
 		
 		String encPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 		
-		member.setUserStatus(encPassword);
+		member.setPassword(encPassword);
 		memberRepository.save(member);
 		
 		return true;
