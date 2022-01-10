@@ -1,4 +1,4 @@
-package com.zerobase.fastlms.admin.course;
+package com.zerobase.fastlms.admin.course.model;
 
 import com.zerobase.fastlms.admin.model.MemberParam;
 

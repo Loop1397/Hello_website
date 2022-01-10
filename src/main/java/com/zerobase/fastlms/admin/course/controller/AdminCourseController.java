@@ -11,7 +11,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.zerobase.fastlms.admin.course.CourseParam;
+import com.zerobase.fastlms.admin.course.model.CourseParam;
 import com.zerobase.fastlms.admin.course.dto.CourseDto;
 import com.zerobase.fastlms.admin.course.model.CourseInput;
 import com.zerobase.fastlms.admin.course.service.CourseService;

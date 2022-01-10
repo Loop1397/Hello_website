@@ -2,7 +2,9 @@ package com.zerobase.fastlms.admin.course.service;
 
 import java.util.List;
 
-import com.zerobase.fastlms.admin.course.CourseParam;
+import com.zerobase.fastlms.admin.course.model.CourseParam;
+import com.zerobase.fastlms.admin.course.model.ServiceResult;
+import com.zerobase.fastlms.admin.course.model.TakeCourseInput;
 import com.zerobase.fastlms.admin.course.dto.CourseDto;
 import com.zerobase.fastlms.admin.course.model.CourseInput;
 
@@ -52,5 +54,12 @@ public interface CourseService {
 	 * @return
 	 */
 	CourseDto frontDetail(long id);
+
+	/**
+	 * 수강 신청
+	 * @param parameter
+	 * @return
+	 */
+	ServiceResult req(TakeCourseInput parameter);
 
 }
