@@ -8,5 +8,7 @@ import lombok.Data;
 public class CourseParam extends MemberParam {
 	
 	long categoryId;
+	//강좌 id
+	long id;
 	
 }

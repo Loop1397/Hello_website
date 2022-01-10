@@ -35,7 +35,7 @@
 		<li th:each="x : ${list}">
 			<div>
 				<a th:href="'/course/' + ${x.id}">
-					<h3 th:area="${x.subject}">강좌명</h3>
+					<h3 th:text="${x.subject}">강좌명</h3>
 				</a>
 				<div>
 					<p th:text="${x.summary}"></p>
