@@ -51,13 +51,14 @@ public class AdminTakeCourseController extends BaseController {
 	public String status(Model model, TakeCourseParam parameter) {
 		
 		ServiceResult result = takeCourseService.updateStatus(parameter.getId(), parameter.getStatus());
-		if(result.isResult()) {
+		if(!result.isResult()) {
 			model.addAttribute("message", result.getMessage());
 			return "common/error";
 		}
-		
 
-		return "admin/takecourse/status";
+		model.addAttribute("message", result.getMessage());
+
+		return "admin/takecourse/list";
 	}
 	
 }

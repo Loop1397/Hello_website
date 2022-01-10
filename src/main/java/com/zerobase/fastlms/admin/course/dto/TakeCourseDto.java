@@ -3,8 +3,16 @@ package com.zerobase.fastlms.admin.course.dto;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import lombok.Data;;
+import com.zerobase.fastlms.admin.course.entity.TakeCourse;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Data
 public class TakeCourseDto {
 Long id;
@@ -35,6 +43,17 @@ Long id;
 		return regDt != null ? regDt.format(formatter): "";
 		
 		
+	}
+
+	public static TakeCourseDto of(TakeCourse x) {
+		return TakeCourseDto.builder()
+				.id(x.getId())
+				.courseId(x.getCourseId())
+				.userId(x.getUserId())
+				.payPrice(x.getPayPrice())
+				.status(x.getStatus())
+				.regDt(x.getRegDt())
+				.build();
 	}
 
 

@@ -10,4 +10,6 @@ public class TakeCourseInput extends MemberParam {
 	long courseId;
 	String userId;
 	
+	long TakeCourseId;
+	
 }

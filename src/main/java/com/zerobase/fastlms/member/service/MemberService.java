@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import com.zerobase.fastlms.admin.course.model.ServiceResult;
 import com.zerobase.fastlms.admin.dto.MemberDto;
 import com.zerobase.fastlms.admin.model.MemberParam;
 import com.zerobase.fastlms.member.entity.Member;
@@ -66,4 +67,18 @@ public interface MemberService extends UserDetailsService {
 	 * 회원 비밀번호 초기화
 	 */
 	boolean updatePassword(String userId, String password);
+	
+	/**
+	 * 회원 정보 페이지 내 비밀번호 변경 기능 
+	 * @param parameter
+	 * @return
+	 */
+	ServiceResult updateMemberPassword(MemberInput parameter);
+
+	/**
+	 * 회원 정보 업데이트(수정)
+	 * @param parameter
+	 * @return
+	 */
+	ServiceResult updateMember(MemberInput parameter);
 }

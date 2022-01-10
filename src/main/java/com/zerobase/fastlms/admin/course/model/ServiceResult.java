@@ -9,6 +9,7 @@ public class ServiceResult {
 	String message;
 	
 	public ServiceResult() {
+		this.result = true;
 	}
 	
 	public ServiceResult(boolean result, String message) {

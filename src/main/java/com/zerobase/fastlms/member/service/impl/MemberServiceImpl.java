@@ -15,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import com.zerobase.fastlms.admin.course.model.ServiceResult;
 import com.zerobase.fastlms.admin.dto.MemberDto;
 import com.zerobase.fastlms.admin.mapper.MemberMapper;
 import com.zerobase.fastlms.admin.model.MemberParam;
@@ -329,8 +330,47 @@ public class MemberServiceImpl implements MemberService {
 		return true;
 	}
 
-	
+	@Override
+	public ServiceResult updateMemberPassword(MemberInput parameter) {
+		
+		String userId = parameter.getUserId();
+		
+		Optional<Member> optionalMember = memberRepository.findById(userId);
+		if(!optionalMember.isPresent()) {
+			throw new UsernameNotFoundException("회원 정보가 존재하지 않습니다.");
+		}
+		
+		Member member = optionalMember.get();
+		
+		if(!BCrypt.checkpw(parameter.getPassword(), member.getPassword())) {
+			return new ServiceResult(false, "비밀번호가 일치하지 않습니다.");
+		}
+		
+		String encPassword = BCrypt.hashpw(parameter.getNewPasword(), BCrypt.gensalt());
+		member.setPassword(encPassword);
+		memberRepository.save(member);		
+		return new ServiceResult(true);
+	}
 
-	
+	@Override
+	public ServiceResult updateMember(MemberInput parameter) {
+		String userId = parameter.getUserId();
+		
+		Optional<Member> optionalMember = memberRepository.findById(userId);
+		if(!optionalMember.isPresent()) {
+			throw new UsernameNotFoundException("회원 정보가 존재하지 않습니다.");
+		}
+		
+		Member member = optionalMember.get();
+		
+		member.setPhone(parameter.getPhone());
+		member.setUdtDt(LocalDateTime.now());
+		member.setZipcode(parameter.getZipcode());
+		member.setAddr(parameter.getAddr());
+		member.setAddrDetail(parameter.getAddrDetail());
+		memberRepository.save(member);
+		
+		return new ServiceResult();	
+	}	
 	
 }

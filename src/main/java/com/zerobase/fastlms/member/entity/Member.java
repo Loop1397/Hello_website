@@ -33,7 +33,9 @@ public class Member implements MemberCode{
 	private String phone;
 	private String password;
 	//아이디 생성 일자
-	private LocalDateTime regDt;	
+	private LocalDateTime regDt;
+	//회원 정보 수정일
+	private LocalDateTime udtDt;		
 
 	//이메일 인증 했는지 안했는지 저장
 	private boolean emailAuthYn;
@@ -53,4 +55,9 @@ public class Member implements MemberCode{
 	
 	//현재 유저 상태 저장(사용중, 정지중 등등)
 	private String userStatus;
+	
+	//우편 관련
+	private String zipcode;
+	private String addr;
+	private String addrDetail;
 }

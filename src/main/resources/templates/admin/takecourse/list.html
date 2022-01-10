@@ -141,13 +141,13 @@
 	            </td>
 	            <td>
 	                <p th:if="${x.status eq 'REQ'}">수강신청</p>
-	                <p th:if="${x.status eq 'COMPLETE'}">결재완료</p>
+	                <p th:if="${x.status eq 'COMPLETE'}">결제완료</p>
 	                <p th:if="${x.status eq 'CANCEL'}">수강취소</p>
 	            </td>
 	            <td>
 	                <div class="row-buttons" th:if="${x.status eq 'REQ'}">
 	                    <input type="hidden" name="id" th:value="${x.id}"/>
-	                    <button value="COMPLETE" type="button">결재완료 처리</button>
+	                    <button value="COMPLETE" type="button">결제완료 처리</button>
 	                    <button value="CANCEL" type="button">수강취소 처리</button>
 	                </div>
 	            </td>

@@ -8,4 +8,8 @@ import lombok.Data;
 public class TakeCourseParam extends MemberParam {
 	long id;
 	String status;
+	
+	String userId;
+	
+	long takeCourseId;
 }

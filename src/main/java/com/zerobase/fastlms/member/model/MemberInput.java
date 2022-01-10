@@ -11,8 +11,15 @@ public class MemberInput {
 	
 	private String userId;
 	private String userName;
-	private String password;
 	private String phone;
+	private String password;
+	
+	private String newPasword;
+	
+	private String zipcode;
+	private String addr;
+	private String addrDetail;
+	
 	
 	/**
 	 * 회원가입 이메일 제목/내용
@@ -40,35 +47,4 @@ public class MemberInput {
 		return this.emailText;
 	}
 	
-//	public String getUserId() {
-//		return userId;
-//	}
-//	
-//	public void setUserId(String userId) {
-//		this.userId = userId;
-//	}
-//	
-//	public String getUserName() {
-//		return userName;
-//	}
-//
-//	public void setUserName(String userName) {
-//		this.userName = userName;
-//	}
-//	
-//	public String getPassword() {
-//		return password;
-//	}
-//
-//	public void setPassword(String password) {
-//		this.password = password;
-//	}
-//	
-//	public String getPhone() {
-//		return phone;
-//	}
-//
-//	public void setPhone(String phone) {
-//		this.phone = phone;
-//	}
 }

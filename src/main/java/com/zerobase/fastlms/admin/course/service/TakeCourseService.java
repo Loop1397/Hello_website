@@ -20,10 +20,31 @@ public interface TakeCourseService {
 	List<TakeCourseDto> list(TakeCourseParam parameter);
 
 	/**
+	 * 수강 상세 정보
+	 * @param id
+	 * @return
+	 */
+	TakeCourseDto detail(long id);
+	
+	/**
 	 * 수강내용 상태 변경
 	 * @param id
 	 * @param status
 	 * @return
 	 */
 	ServiceResult updateStatus(long id, String status);
+	
+	/**
+	 * 내 수강내역 목록
+	 * @param userId
+	 * @return
+	 */
+	List<TakeCourseDto> myCourse(String userId);
+	
+	/**
+	 * 수강신청 취소 처리
+	 * @param id
+	 * @return
+	 */
+	ServiceResult cancel(long id);
 }
