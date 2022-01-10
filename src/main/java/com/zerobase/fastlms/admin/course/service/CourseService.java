@@ -62,4 +62,10 @@ public interface CourseService {
 	 */
 	ServiceResult req(TakeCourseInput parameter);
 
+	/**
+	 * 모든 강좌 정보 가져오기
+	 * @return
+	 */
+	List<CourseDto> listAll();
+
 }

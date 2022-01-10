@@ -1,15 +1,22 @@
 package com.zerobase.fastlms.admin.course.controller;
 
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.zerobase.fastlms.admin.course.model.CourseParam;
 import com.zerobase.fastlms.admin.course.dto.CourseDto;
@@ -18,7 +25,9 @@ import com.zerobase.fastlms.admin.course.service.CourseService;
 import com.zerobase.fastlms.admin.service.CategoryService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 @Controller
 public class AdminCourseController extends BaseController {
@@ -32,20 +41,23 @@ public class AdminCourseController extends BaseController {
 		
 		parameter.init();
 		
-		List<CourseDto> courseList = courseService.list(parameter);
+		List<CourseDto> list = courseService.list(parameter);
 		
 		long totalCount = 0;
 		
-		if(!CollectionUtils.isEmpty(courseList)) {
-			totalCount = courseList.get(0).getTotalCount();
+		if(!CollectionUtils.isEmpty(list)) {
+			totalCount = list.get(0).getTotalCount();
 		}
 		
 		String queryString = parameter.getQueryString();
 		String pagerHtml = super.getPagerHtml(totalCount, parameter.getPageSize(), parameter.getPageIndex(), queryString);
 		
-		model.addAttribute("list", courseList);
+		model.addAttribute("list", list);
 		model.addAttribute("totalCount", totalCount);
 		model.addAttribute("pager", pagerHtml);
+		
+		List<CourseDto> courseList = courseService.listAll();
+		model.addAttribute("courseList", courseList);
 		
 		return "admin/course/list";
 	}
@@ -86,22 +98,70 @@ public class AdminCourseController extends BaseController {
 		return "admin/course/add";
 	}
 	
+	private String getNewSaveFile(String baseLocalPath, String originalFilename) {
+	    
+        LocalDate now = LocalDate.now();
+    
+        String[] dirs = {
+                String.format("%s/%d/", baseLocalPath,now.getYear()),
+                String.format("%s/%d/%02d/", baseLocalPath, now.getYear(),now.getMonthValue()),
+                String.format("%s/%d/%02d/%02d/", baseLocalPath, now.getYear(), now.getMonthValue(), now.getDayOfMonth())};
+        
+        
+        for(String dir : dirs) {
+            File file = new File(dir);
+            //파일이 디렉토리가 아니라면 디렉토리 만들기
+            if (!file.isDirectory()) {
+                file.mkdir();
+            }
+        }
+        
+        String fileExtension = "";
+        if (originalFilename != null) {
+            int dotPos = originalFilename.lastIndexOf(".");
+            if (dotPos > -1) {
+                fileExtension = originalFilename.substring(dotPos + 1);
+            }
+        }
+        
+        String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+        String newFilename = String.format("%s%s", dirs[2], uuid);
+        if (fileExtension.length() > 0) {
+            newFilename += "." + fileExtension;
+        }
+    
+        return newFilename;
+    }
+	
 	@PostMapping(value= {"/admin/course/add", "/admin/course/edit"})
 	public String addSubmit(Model model, HttpServletRequest request
-			,CourseInput parameter){
-		
-		boolean editMode = request.getRequestURI().contains("/edit");
-		
-		if(editMode) {
+            , MultipartFile file
+            , CourseInput parameter) {
+	
+	
+		if (file != null) {
 			
+			String localPath = "/Users/nochan-u/git/hello-website/sources/zerobase/fastlms/files";
+		
+			try {
+				File newFile = new File(localPath);
+				FileCopyUtils.copy(file.getInputStream(), new FileOutputStream(newFile));
+			} catch (IOException e) {
+				log.info("################## - 1");
+				log.info(e.getMessage());
+			}
+		}
+	
+		
+		boolean editMode = request.getRequestURI().contains("/edit.do");
+		
+		if (editMode) {
 			long id = parameter.getId();
-			
 			CourseDto existCourse = courseService.getById(id);
-			if(existCourse == null) {
-				//수정해야할 강좌가 없음. 에러 처리
-				model.addAttribute("message", "강좌 정보가 존재하지 않습니다.");
+			if (existCourse == null) {
+				// error 처리
+				model.addAttribute("message", "강좌정보가 존재하지 않습니다.");
 				return "common/error";
-				
 			}
 			
 			boolean result = courseService.set(parameter);
@@ -109,11 +169,11 @@ public class AdminCourseController extends BaseController {
 		} else {
 			boolean result = courseService.add(parameter);
 		}
-		
-		return "redirect:/admin/course/list";
+            
+        return "redirect:/admin/course/list";
 	}
 	
-	@PostMapping(value= {"/admin/course/delete"})
+	@PostMapping("/admin/course/delete")
 	public String del(Model model, HttpServletRequest request
 			,CourseInput parameter){
 		

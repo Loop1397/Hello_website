@@ -11,5 +11,5 @@ public class TakeCourseParam extends MemberParam {
 	
 	String userId;
 	
-	long takeCourseId;
+	long searchCourseId;
 }
