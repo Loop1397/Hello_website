@@ -48,7 +48,6 @@
 				var usingYn = $tr.find('input[type=checkbox]')[0].checked;
 				
 				$updateForm = $('form[name=updateForm]');
-				
 				$updateForm.find('input[name=id]').val(id);
 				$updateForm.find('input[name=categoryName]').val(categoryName);
 				$updateForm.find('input[name=sortValue]').val(sortValue);
@@ -99,7 +98,7 @@
 				<tr th:each="x : ${list}">
 					<td th:text="${x.id}">
 						<input type="hidden" name="id" th:value="${x.id}"/>
-						<p th:text("${x.id")>1</p>
+						<p th:text="${x.id}">1</p>
 					</td>
 					
 					<td>

@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.zerobase.fastlms.admin.course.controller.BaseController;
 import com.zerobase.fastlms.admin.dto.MemberDto;
 import com.zerobase.fastlms.admin.model.MemberParam;
 import com.zerobase.fastlms.admin.model.MemberInput;
@@ -18,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Controller
-public class AdminMemberController {
+public class AdminMemberController extends BaseController {
 
 	/**
 	 * final이기 때문에 반드시 초기화를 해줘야함.
@@ -41,11 +42,11 @@ public class AdminMemberController {
 			totalCount = members.get(0).getTotalCount();
 		}
 		String queryString = parameter.getQueryString();
-		PageUtil pageUtil = new PageUtil(totalCount, parameter.getPageSize(), parameter.getPageIndex(), queryString);
+		String pagerHtml = getPagerHtml(totalCount, parameter.getPageSize(), parameter.getPageIndex(), queryString);
 		
 		model.addAttribute("list", members);
 		model.addAttribute("totalCount", totalCount);
-		model.addAttribute("pager", pageUtil.pager());
+		model.addAttribute("pager", pagerHtml);
 		
 		
 		return "admin/member/list";

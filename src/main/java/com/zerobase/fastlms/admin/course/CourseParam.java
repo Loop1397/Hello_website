@@ -1,0 +1,9 @@
+package com.zerobase.fastlms.admin.course;
+
+import com.zerobase.fastlms.admin.model.MemberParam;
+
+import lombok.Data;
+
+@Data
+public class CourseParam extends MemberParam {
+}

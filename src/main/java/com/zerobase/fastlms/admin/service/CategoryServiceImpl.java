@@ -1,7 +1,6 @@
 package com.zerobase.fastlms.admin.service;
 
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +22,7 @@ public class CategoryServiceImpl implements CategoryService {
 	
 	private Sort getSortBySortValueDesc() {
 		return Sort.by(Sort.Direction.DESC, "sortValue");
+		
 	}
 	
 	//카테고리 리스트 불러오기
@@ -30,6 +30,7 @@ public class CategoryServiceImpl implements CategoryService {
 	public List<CategoryDto> list() {
 		List<Category> categories = categoryRepository.findAll(getSortBySortValueDesc());
 		return CategoryDto.of(categories);
+		
 	}
 	
 	// 카테고리 신규 추가

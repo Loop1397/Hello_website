@@ -36,6 +36,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 	protected void configure(HttpSecurity http) throws Exception {
 		
 		http.csrf().disable();
+		http.headers().frameOptions().sameOrigin();
 		
 		//http페이지의 권환을 설정할 수 있음
 		
