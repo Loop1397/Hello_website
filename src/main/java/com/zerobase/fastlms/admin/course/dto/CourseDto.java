@@ -2,6 +2,8 @@ package com.zerobase.fastlms.admin.course.dto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.zerobase.fastlms.admin.course.entity.Course;
 
@@ -48,4 +50,27 @@ public class CourseDto {
 				.udtDt(course.getUdtDt())
 				.build();
 	}
+	
+	public static List<CourseDto> of(List<Course> courses) {
+		
+		if(courses == null) {
+			return null;
+		}
+		
+		List<CourseDto> courseList = new ArrayList<>();
+		for(Course x : courses) {
+			courseList.add(CourseDto.of(x));			
+			}
+		return courseList;
+		
+//		if(courses != null) {
+//			List<CourseDto> courseList = new ArrayList<>();
+//			for(Course x : courses) {
+//				courseList.add(CourseDto.of(x));			
+//				}
+//			return courseList;
+//		}
+//		return null;
+	}
+	
 }

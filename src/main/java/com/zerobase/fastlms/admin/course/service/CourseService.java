@@ -41,4 +41,9 @@ public interface CourseService {
 	 */
 	boolean del(String idList);
 
+	/**
+	 * 프론트에 보여줄 강좌 목록
+	 */
+	List<CourseDto> frontList(CourseParam parameter);
+
 }
