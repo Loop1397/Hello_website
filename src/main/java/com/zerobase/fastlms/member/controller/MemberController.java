@@ -17,6 +17,7 @@ import com.zerobase.fastlms.member.model.MemberInput;
 import com.zerobase.fastlms.member.model.ResetPasswordInput;
 //import com.zerobase.fastcampus.member.repository.MemberRepository;
 import com.zerobase.fastlms.member.service.MemberService;
+import com.zerobase.fastlms.util.PasswordUtils;
 
 import lombok.RequiredArgsConstructor;
 
@@ -216,6 +217,31 @@ public class MemberController {
 		model.addAttribute(detail);
 		
 		return "member/info";
+	}
+	
+	//회원 탈퇴
+	@GetMapping("/member/withdraw")
+	public String withDraw(Model model) {
+		
+		return "member/withdraw";
+	}
+	
+	@PostMapping("/member/withdraw")
+	public String withDrawSubmit(Model model
+			, MemberInput parameter
+			, Principal principal) {
+		
+		String userId = principal.getName();
+		parameter.setUserId(userId);
+		
+		
+		ServiceResult result = memberService.withdraw(userId, parameter.getPassword());
+		if(!result.isResult()) {
+			model.addAttribute("message", result.getMessage());
+			return "common/error";
+		}
+		
+		return "redirect:/member/logout";
 	}
 	
 }
